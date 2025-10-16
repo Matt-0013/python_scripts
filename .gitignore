@@ -1,0 +1,16 @@
+# Ignore all virtual environments
+**/venv/
+
+# Ignore Python bytecode
+**/__pycache__/
+**/*.pyc
+
+# Ignore logs and reports (optional)
+**/logs/
+**/reports/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
