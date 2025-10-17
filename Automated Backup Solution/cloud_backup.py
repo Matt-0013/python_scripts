@@ -1,5 +1,3 @@
-# cloud_backup.py
-
 import os
 import tarfile
 import logging
@@ -15,9 +13,7 @@ from config import (
     AWS_REGION
 )
 
-# ------------------------------
-# Logging Setup
-# ------------------------------
+
 os.makedirs("logs", exist_ok=True)
 logging.basicConfig(
     filename='logs/backup.log',
@@ -25,9 +21,7 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-# ------------------------------
-# Function to create backup
-# ------------------------------
+
 def create_backup():
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     backup_filename = f"backup_{timestamp}.tar.gz"
@@ -44,9 +38,7 @@ def create_backup():
         print(f"[ERROR] Failed to create backup: {e}")
         return None
 
-# ------------------------------
-# Function to upload to S3
-# ------------------------------
+
 def upload_to_s3(file_path):
     if file_path is None:
         return False
@@ -80,9 +72,6 @@ def upload_to_s3(file_path):
         print(f"[ERROR] Failed to upload to S3: {e}")
         return False
 
-# ------------------------------
-# Main Function
-# ------------------------------
 def main():
     backup_file = create_backup()
     success = upload_to_s3(backup_file)
@@ -92,10 +81,6 @@ def main():
     else:
         logging.error(f"S3 backup operation FAILED: {backup_file}")
 
-    # Optional: remove local backup after upload
-    # if success and backup_file:
-    #     os.remove(backup_file)
-    #     logging.info(f"Local backup removed: {backup_file}")
 
 if __name__ == "__main__":
     main()
