@@ -1,22 +1,3 @@
-#!/usr/bin/env python3
-"""
-Professional Log Analyzer
-
-This script parses a web server log file (Apache/Nginx),
-analyzes key metrics such as top IPs, top URLs, total requests,
-and 404 errors, and generates a summary report.
-
-Features:
-- Command-line interface for log file, report file, and top N.
-- Logging to file and console with proper formatting.
-- Robust error handling for real-world usage.
-
-Dependencies:
-- config.py
-- log_parser.py
-- log_reporter.py
-"""
-
 import os
 import sys
 import argparse
@@ -28,50 +9,28 @@ from config import LOG_FILE_PATH, LOG_OUTPUT_FILE, SUMMARY_REPORT_FILE, TOP_COUN
 from log_parser import parse_log_line
 from log_reporter import generate_report
 
-
-# ------------------------------
-# Logging Setup
-# ------------------------------
 def setup_logging(log_file: str) -> None:
-    """
-    Set up logging to file and console.
 
-    Args:
-        log_file (str): Path to the log file for logging.
-    """
     os.makedirs(os.path.dirname(log_file), exist_ok=True)
 
-    # Avoid duplicate handlers
     logger = logging.getLogger()
     if logger.hasHandlers():
         logger.handlers.clear()
 
     logger.setLevel(logging.INFO)
 
-    # File handler
     file_handler = logging.FileHandler(log_file)
     file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
     logger.addHandler(file_handler)
 
-    # Console handler
+
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(logging.Formatter("%(levelname)s - %(message)s"))
     logger.addHandler(console_handler)
 
 
-# ------------------------------
-# Log Parsing
-# ------------------------------
 def parse_log(file_path: str) -> List[Dict[str, Any]]:
-    """
-    Parse log file and extract entries.
 
-    Args:
-        file_path (str): Path to the log file.
-
-    Returns:
-        List[Dict[str, Any]]: List of parsed log entries.
-    """
     if not os.path.exists(file_path):
         logging.error(f"Log file not found: {file_path}")
         return []
@@ -93,20 +52,8 @@ def parse_log(file_path: str) -> List[Dict[str, Any]]:
     return log_entries
 
 
-# ------------------------------
-# Log Analysis
-# ------------------------------
 def analyze_logs(entries: List[Dict[str, Any]], top_count: int) -> Dict[str, Any]:
-    """
-    Analyze log entries for key metrics.
 
-    Args:
-        entries (List[Dict[str, Any]]): Parsed log entries.
-        top_count (int): Number of top URLs/IPs to include.
-
-    Returns:
-        Dict[str, Any]: Summary statistics.
-    """
     total_requests = len(entries)
     errors_404 = sum(1 for e in entries if e['status'] == '404')
 
@@ -124,16 +71,8 @@ def analyze_logs(entries: List[Dict[str, Any]], top_count: int) -> Dict[str, Any
     return summary
 
 
-# ------------------------------
-# CLI Argument Parser
-# ------------------------------
 def parse_arguments() -> argparse.Namespace:
-    """
-    Parse command-line arguments.
 
-    Returns:
-        argparse.Namespace: Parsed CLI arguments.
-    """
     parser = argparse.ArgumentParser(description="Web Log Analyzer")
     parser.add_argument(
         "-l", "--logfile", type=str, default=LOG_FILE_PATH,
@@ -154,9 +93,6 @@ def parse_arguments() -> argparse.Namespace:
     return parser.parse_args()
 
 
-# ------------------------------
-# Main Function
-# ------------------------------
 def main() -> None:
     args = parse_arguments()
     setup_logging(args.log)
@@ -180,8 +116,5 @@ def main() -> None:
     logging.info("Log analysis completed successfully.")
 
 
-# ------------------------------
-# Entry Point
-# ------------------------------
 if __name__ == "__main__":
     main()
