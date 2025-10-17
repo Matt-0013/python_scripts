@@ -1,17 +1,14 @@
-# generate_sample_logs.py
-
 import random
 from datetime import datetime, timedelta
 
-# File to write logs
 log_file = "sample_logs/access.log"
-num_entries = 500  # Number of log entries to generate
+num_entries = 500 
 
-# Sample data
+
 ips = ["192.168.1.10", "192.168.1.11", "10.0.0.2", "10.0.0.3", "127.0.0.1"]
 methods = ["GET", "POST", "PUT", "DELETE"]
 urls = ["/index.html", "/dashboard", "/api/data", "/login", "/contact", "/about", "/products"]
-status_codes = [200, 200, 200, 404, 500, 403]  # More chances for 200
+status_codes = [200, 200, 200, 404, 500, 403] 
 user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
@@ -19,7 +16,6 @@ user_agents = [
     "PostmanRuntime/7.26.8"
 ]
 
-# Generate logs
 with open(log_file, "w") as f:
     now = datetime.now()
     for _ in range(num_entries):
