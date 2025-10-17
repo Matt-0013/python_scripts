@@ -1,5 +1,3 @@
-# remote_backup.py
-
 import os
 import tarfile
 import logging
@@ -8,9 +6,6 @@ import paramiko
 from scp import SCPClient
 from config import SOURCE_DIR, BACKUP_DIR, REMOTE_HOST, REMOTE_PORT, USERNAME, SSH_KEY_PATH, REMOTE_DIR
 
-# ------------------------------
-# Logging Setup
-# ------------------------------
 os.makedirs("logs", exist_ok=True)
 logging.basicConfig(
     filename='logs/backup.log',
@@ -18,9 +13,6 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
-# ------------------------------
-# Function to create backup
-# ------------------------------
 def create_backup():
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     backup_filename = f"backup_{timestamp}.tar.gz"
@@ -38,9 +30,6 @@ def create_backup():
         print(f"[ERROR] Failed to create backup: {e}")
         return None
 
-# ------------------------------
-# Function to send backup to remote server using SSH key
-# ------------------------------
 def send_to_remote(file_path):
     if file_path is None:
         return False
@@ -70,9 +59,6 @@ def send_to_remote(file_path):
         print(f"[ERROR] Failed to transfer backup: {e}")
         return False
 
-# ------------------------------
-# Main Function
-# ------------------------------
 def main():
     backup_file = create_backup()
     success = send_to_remote(backup_file)
@@ -82,10 +68,7 @@ def main():
     else:
         logging.error(f"Backup operation FAILED: {backup_file}")
 
-    # Optional: remove local backup after successful transfer
-    # if success and backup_file:
-    #     os.remove(backup_file)
-    #     logging.info(f"Local backup removed: {backup_file}")
 
 if __name__ == "__main__":
     main()
+
