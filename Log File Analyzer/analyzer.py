@@ -1,9 +1,6 @@
-# analyzer.py
-
 from collections import Counter
 
 def analyze_logs(parsed_logs):
-    """Analyzes parsed log entries and returns summary data."""
     total_requests = len(parsed_logs)
     status_counter = Counter(entry['status'] for entry in parsed_logs)
     url_counter = Counter(entry['url'] for entry in parsed_logs)
@@ -17,3 +14,4 @@ def analyze_logs(parsed_logs):
     }
 
     return summary
+
